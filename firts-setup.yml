@@ -1,0 +1,25 @@
+---
+- name: install cluster
+  hosts: nodes
+  gather_facts: no
+  become: true
+  tasks:
+  - name: install packages
+    yum:
+      name:
+        - pcs
+        - fence-agents-ipmilan
+
+  - name: start services
+    service:
+      name: pcsd
+      state: started
+      enabled: yes
+
+  - name: firewall
+    firewalld:
+      service: high-availability
+      permanent: yes
+      state: enabled
+      immediate: yes
+

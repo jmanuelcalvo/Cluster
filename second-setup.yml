@@ -1,0 +1,21 @@
+---
+- name: install cluster
+  hosts: nodes
+  gather_facts: no
+  become: true
+  tasks:
+  - name: install packages
+    yum:
+      name:
+        - httpd
+        - postfix
+        - mailx  
+        - mutt
+
+  - name: firewall
+    firewalld:
+      service: http
+      permanent: yes
+      state: enabled
+      immediate: yes
+

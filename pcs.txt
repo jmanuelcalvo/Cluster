@@ -1,0 +1,24 @@
+pcs host auth nodea.private.example.com nodeb.private.example.com nodec.private.example.com noded.private.example.com
+
+pcs cluster setup prod1 nodea.private.example.com addr=192.168.0.10 addr=192.168.2.10 nodeb.private.example.com addr=192.168.0.11 addr=192.168.2.11 nodec.private.example.com addr=192.168.0.12 addr=192.168.2.12 noded.private.example.com addr=192.168.0.13 addr=192.168.2.13
+
+pcs cluster enable --all
+
+pcs quorum update wait_for_all=1 last_man_standing=1
+
+pcs cluster start --all
+
+pcs stonith create fence_nodea fence_ipmilan pcmk_host_list=nodea.private.example.com ip=192.168.0.101 username=admin password=password lanplus=1 power_timeout=180
+
+pcs stonith create fence_nodeb fence_ipmilan pcmk_host_list=nodeb.private.example.com ip=192.168.0.102 username=admin password=password lanplus=1 power_timeout=180 
+
+pcs stonith create fence_nodec fence_ipmilan pcmk_host_list=nodec.private.example.com ip=192.168.0.103 username=admin password=password lanplus=1 power_timeout=180
+
+pcs stonith create fence_noded fence_ipmilan pcmk_host_list=noded.private.example.com ip=192.168.0.103 username=admin password=password lanplus=1 power_timeout=180
+
+
+pcs stonith create fence_nodec fence_ipmilan pcmk_host_list=nodec.private.example.com ip=192.168.0.103 username=admin password=password lanplus=1 power_timeout=180
+pcs stonith create fence_nodeb fence_ipmilan pcmk_host_list=nodeb.private.example.com ip=192.168.0.102 username=admin password=password lanplus=1 power_timeout=180
+pcs stonith create fence_nodea fence_ipmilan pcmk_host_list=nodea.private.example.com ip=192.168.0.101 username=admin password=password lanplus=1 power_timeout=180
+pcs stonith create fence_noded fence_ipmilan pcmk_host_list=noded.private.example.com ip=192.168.0.104 username=admin password=password lanplus=1 power_timeout=180
+
